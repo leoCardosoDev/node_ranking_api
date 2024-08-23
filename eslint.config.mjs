@@ -41,6 +41,10 @@ export default [
     },
     rules: {
       ...tsPlugin.configs.recommended.rules,
+      'quotes': ['error', 'single'],
+      'semi': ['error', 'always'],
+      'indent': ['error', 2],
+      'no-multi-spaces': ['error'],
       "no-console": "off",
       "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
       "no-redeclare": "off",
