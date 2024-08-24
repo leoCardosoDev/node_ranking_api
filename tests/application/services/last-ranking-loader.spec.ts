@@ -66,4 +66,11 @@ describe('LastRankingLoader Usecases', () => {
     const promise = sut.load()
     await expect(promise).rejects.toThrow(new Error())
   })
+
+  it('should returns data on success', async () => {
+    const { sut } = makeSut()
+    const rankingData = await sut.load()
+    expect(rankingData[0]).toEqual(mockRankingScore1)
+    expect(rankingData[1]).toEqual(mockRankingScore2)
+  })
 })
