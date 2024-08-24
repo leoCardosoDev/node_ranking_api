@@ -5,6 +5,7 @@ const config: Config.InitialOptions = {
   collectCoverageFrom: [
     '<rootDir>/src/**/*.ts',
     '!<rootDir>/src/main/**',
+    '!<rootDir>/src/infra/data-sources/ranking.ts',
     '!<rootDir>/src/**/index.ts'
   ],
   coverageDirectory: 'coverage',
