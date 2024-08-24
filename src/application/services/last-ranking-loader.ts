@@ -9,6 +9,7 @@ export class LastRankingLoaderService implements LastRankingLoader {
     if (new Date().getHours() > 21) {
       throw new Error()
     }
-    return await this._loadLastRankingRepository.loadLastRanking()
+    await this._loadLastRankingRepository.loadLastRanking()
+    return []
   }
 }
