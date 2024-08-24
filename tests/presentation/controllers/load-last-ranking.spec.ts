@@ -3,6 +3,10 @@ import { LastRankingLoader } from '@/domain/usecases'
 import { LoadLastRankingController } from '@/presentation/controllers'
 import { RankingScoreViewModel } from '@/presentation/view-models'
 
+const throwError = (): never => {
+  throw new Error()
+}
+
 const mockRankingScore: RankingScore[] = [{
   player: {
     name: 'any_player_name',
@@ -86,6 +90,16 @@ describe('LoadLastRanking Controller', () => {
     expect(response).toEqual({
       statusCode: 200,
       data: mockRankingScoreViewModel
+    })
+  })
+
+  it('should return 500 if LastRankingLoader throws', async () => {
+    const { sut, lastRankingLoaderStub } = makeSut()
+    jest.spyOn(lastRankingLoaderStub, 'load').mockImplementationOnce(throwError)
+    const response = await sut.handle()
+    expect(response).toEqual({
+      statusCode: 500,
+      data: new Error()
     })
   })
 })
