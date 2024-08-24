@@ -1,6 +1,7 @@
 import { LoadLastRankingRepository } from '@/application/contracts'
 import { RankingScoreModel } from '@/application/models'
 import { LastRankingLoaderService } from '@/application/services'
+import { RankingUnavailableError } from '@/domain/errors'
 
 const mockRankingScore1 = {
   player: {
@@ -64,7 +65,7 @@ describe('LastRankingLoader Usecases', () => {
     const { sut } = makeSut()
     jest.spyOn(Date.prototype, 'getHours').mockReturnValueOnce(22)
     const promise = sut.load()
-    await expect(promise).rejects.toThrow(new Error())
+    await expect(promise).rejects.toThrow(new RankingUnavailableError())
   })
 
   it('should returns data on success', async () => {
