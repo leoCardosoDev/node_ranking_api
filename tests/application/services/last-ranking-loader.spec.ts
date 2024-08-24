@@ -40,24 +40,30 @@ class LoadLastRakingRepositoryStub implements LoadLastRankingRepository {
 
 type SutTypes = {
   sut: LastRankingLoaderService
-  loadLastRakingStub: LoadLastRakingRepositoryStub
+  loadLastRankingStub: LoadLastRakingRepositoryStub
 }
 
 const makeSut = (): SutTypes => {
-  const loadLastRakingStub = new LoadLastRakingRepositoryStub()
-  const sut = new LastRankingLoaderService(loadLastRakingStub)
+  const loadLastRankingStub = new LoadLastRakingRepositoryStub()
+  const sut = new LastRankingLoaderService(loadLastRankingStub)
   return {
     sut,
-    loadLastRakingStub
+    loadLastRankingStub
   }
 }
 
 describe('LastRankingLoader Usecases', () => {
   it('should call LoadLastRankingRepository with correct method', async () => {
-    const { sut, loadLastRakingStub } = makeSut()
-    const loadLastRankingSpy = jest.spyOn(loadLastRakingStub, 'loadLastRanking')
+    const { sut, loadLastRankingStub } = makeSut()
+    const loadLastRankingSpy = jest.spyOn(loadLastRankingStub, 'loadLastRanking')
     await sut.load()
     expect(loadLastRankingSpy).toHaveBeenCalledTimes(1)
   })
-})
 
+  it('should throw an error if the current time is after 21:00', async () => {
+    const { sut } = makeSut()
+    jest.spyOn(Date.prototype, 'getHours').mockReturnValueOnce(22)
+    const promise = sut.load()
+    await expect(promise).rejects.toThrow(new Error())
+  })
+})
