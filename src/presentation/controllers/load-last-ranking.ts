@@ -1,5 +1,5 @@
 import { LastRankingLoader } from '@/domain/usecases'
-import { Controller, HttpResponse } from '@/presentation/contracts'
+import { Controller, HttpResponse, ok, serverError } from '@/presentation/contracts'
 import { RankingScoreViewModel } from '../view-models'
 
 export class LoadLastRankingController implements Controller {
@@ -7,18 +7,14 @@ export class LoadLastRankingController implements Controller {
   async handle(): Promise<HttpResponse<RankingScoreViewModel[] | Error>> {
     try {
       const ranking = await this._lastRankingLoader.load()
-      return {
-        statusCode: 200,
-        data: ranking.map(item => ({
+      return ok(
+        ranking.map(item => ({
           ...item,
           matchDate: item.matchDate.toISOString()
         }))
-      }
+      )
     } catch (error) {
-      return {
-        statusCode: 500,
-        data: error as Error
-      }
+      return serverError(error as Error)
     }
   }
 }
